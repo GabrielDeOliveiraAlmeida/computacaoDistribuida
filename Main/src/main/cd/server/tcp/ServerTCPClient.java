@@ -5,14 +5,11 @@
  */
 package main.cd.server.tcp;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
-import main.cd.server.common.Application;
+import main.cd.common.LinearSystems;
 
 /**
  *
@@ -21,8 +18,8 @@ import main.cd.server.common.Application;
 public class ServerTCPClient extends Thread {
 
     Socket socket;
-    DataOutputStream outTo;
-    BufferedReader inFrom;
+    ObjectOutputStream outTo;
+    ObjectInputStream inFrom;
 
     public ServerTCPClient(Socket socket) {
         try {
@@ -30,9 +27,8 @@ public class ServerTCPClient extends Thread {
             //Application appref = (Application) Naming.lookup( "rmi://localhost:1099/ApplicationService" );
             //Sockets TCP
             this.socket = socket;
-            outTo = new DataOutputStream(socket.getOutputStream());
-            inFrom = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            start();
+            outTo = new ObjectOutputStream(this.socket.getOutputStream());
+            inFrom = new ObjectInputStream(this.socket.getInputStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,7 +36,7 @@ public class ServerTCPClient extends Thread {
 
     public void sendMessege(String message) {
         try {
-            System.out.println("Type a message to Server: " + message);
+            System.out.println("Mensagem para o Cliente: " + message);
             outTo.flush();
             outTo.writeBytes(message + '\n');
         } catch (IOException e) {
@@ -48,14 +44,14 @@ public class ServerTCPClient extends Thread {
         }
     }
 
-    public void readMessege() {
+    public Object readMessege() {
         try {
-            String message = inFrom.readLine();
-            System.out.println("Messege received from Server: " + message);
-
+            Object message = inFrom.readObject();
+            return message;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void closeConnection() {
@@ -71,8 +67,11 @@ public class ServerTCPClient extends Thread {
         while (true) {
             try {
                 //Tratar as requisições do cliente.
-                
-                
+                Object message = inFrom.readObject();
+                System.out.println("Objeto = " +  message);
+                if (message instanceof LinearSystems) {
+                    System.out.println("Requisição para resolução de sistema linear");
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
