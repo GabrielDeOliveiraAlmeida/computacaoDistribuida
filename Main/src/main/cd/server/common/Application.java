@@ -16,6 +16,6 @@ public interface Application extends Remote{
     
     public void setMatrix(double[][] coefficient) throws RemoteException;
     public void setIndTerms(double[] independente)  throws RemoteException;
-    public void calculate(double[][] coeficientes, double[] independentes) throws RemoteException; 
+    public double[] calculate() throws RemoteException; 
     
 }

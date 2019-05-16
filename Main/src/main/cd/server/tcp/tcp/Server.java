@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.cd.server.tcp;
+package main.cd.server.tcp.tcp;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,17 +12,18 @@ import java.net.Socket;
  *
  * @author gabriel
  */
-public class Server {
+public class Server extends Thread{
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         Server server = new Server();
-        server.run();
+        server.start();
     }
-
-    public void run() { //It isnt Thread xD
+    
+    @Override
+    public void run() {
         try {
             System.out.println("Inicializando Servidor");
-            ServerSocket welcomeSocket = new ServerSocket(10000);
+            ServerSocket welcomeSocket = new ServerSocket(12345);
             while (true) {
                 Socket socket = welcomeSocket.accept();
                 ServerTCPClient client = new ServerTCPClient(socket);

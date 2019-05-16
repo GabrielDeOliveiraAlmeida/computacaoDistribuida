@@ -5,15 +5,15 @@
  */
 package main.cd.client;
 
+
 /**
  *
  * @author gabriel
  */
 public class Client {
-
+    
     public static void main(String[] args) {
-        ClientTCP client = new ClientTCP();
-        client.init();
+        ClientTCP.init();
     }
 
 }

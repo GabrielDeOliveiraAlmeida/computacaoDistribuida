@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.cd.server.tcp;
+package main.cd.server.tcp.tcp;
 
+import main.cd.server.tcp.linkrmi.RMIClient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,39 +18,42 @@ import main.cd.common.LinearSystems;
  */
 public class ServerTCPClient extends Thread {
 
-    Socket socket;
-    ObjectOutputStream outTo;
-    ObjectInputStream inFrom;
+    public Socket socket;
+    public ObjectOutputStream outTo;
+    public ObjectInputStream inFrom;
+    RMIClient rmi;
 
     public ServerTCPClient(Socket socket) {
         try {
-            //RMI
-            //Application appref = (Application) Naming.lookup( "rmi://localhost:1099/ApplicationService" );
-            //Sockets TCP
+            //TCPSocket
             this.socket = socket;
-            outTo = new ObjectOutputStream(this.socket.getOutputStream());
-            inFrom = new ObjectInputStream(this.socket.getInputStream());
+            this.outTo = new ObjectOutputStream(socket.getOutputStream());;
+            this.inFrom = new ObjectInputStream(socket.getInputStream());
+            //RMI
+            rmi = new RMIClient();
+            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendMessege(String message) {
+    public void sendMessage(Object message) {
         try {
             System.out.println("Mensagem para o Cliente: " + message);
             outTo.flush();
-            outTo.writeBytes(message + '\n');
+            outTo.writeObject(message);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Send Menssagem Error: " + e.getMessage());
         }
     }
 
-    public Object readMessege() {
+    public Object readMessage() {
         try {
             Object message = inFrom.readObject();
             return message;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Read Menssagem Error: " + e.getMessage());
         }
         return null;
     }
@@ -64,18 +68,25 @@ public class ServerTCPClient extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            try {
+        Object resultado = null;
+        try {
+            while (true) {
                 //Tratar as requisições do cliente.
-                Object message = inFrom.readObject();
-                System.out.println("Objeto = " +  message);
-                if (message instanceof LinearSystems) {
-                    System.out.println("Requisição para resolução de sistema linear");
+                Object message = readMessage();
+                System.out.println("Objeto = " + message);
+                if(message == null){
+                    continue;
                 }
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (message instanceof LinearSystems) {
+                    resultado = rmi.linearSystems((LinearSystems) message);
+                }
+                
+                if(resultado != null){
+                    sendMessage(resultado);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
