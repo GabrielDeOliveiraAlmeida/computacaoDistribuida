@@ -5,16 +5,15 @@
  */
 package main.cd.client;
 
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
+import java.net.SocketException;
+import main.cd.common.CalculusDerivative;
+import main.cd.common.CalculusIntegral;
 import main.cd.common.LinearSystems;
+import ui.client.SystemsLinearUIController;
 
 /**
  *
@@ -23,6 +22,10 @@ import main.cd.common.LinearSystems;
 public class ClientTCP extends Thread {
 
     private static ClientTCP client;
+    private static Socket clientSocket;
+    public static ClientTCP getClient() {
+        return client;
+    }
 
     public static void init() {
         client = new ClientTCP();
@@ -41,7 +44,7 @@ public class ClientTCP extends Thread {
 
         } catch (IOException e) {
             System.out.println("Send Menssagem Error: " + e.getMessage());
-            
+
         }
     }
 
@@ -52,10 +55,21 @@ public class ClientTCP extends Thread {
             return message;
         } catch (Exception e) {
             System.out.println("Read Menssagem Error: " + e.getMessage());
-            return null;
+            if(e.getMessage().contains("Connection reset") || e.toString().contains("closed") ){
+                stopSocket();
+                return null;
+            }
         }
+        return null;
     }
 
+    private void stopSocket(){
+        try{
+            clientSocket.close();
+        }catch(Exception e){
+            System.out.println("Socket couldn't be closed");
+        }
+    }
     public void closeConnection() {
         try {
             outTo.close();
@@ -71,53 +85,53 @@ public class ClientTCP extends Thread {
         }
     }
 
-@Override
-        public void run() {
+    public static void calcular(double[][] matriz, double[] vetor) {
+        client.sendMessage((Object) new LinearSystems(matriz, vetor));
+    }
+
+    public static void solveIntegral(String function, String top, String bot) {
+        client.sendMessage((Object) new CalculusIntegral(function, top, bot));
+    }
+
+    public static void solveDerivative(String function, String x) {
+        client.sendMessage((Object) new CalculusDerivative(function, x));
+    }
+
+    @Override
+    public void run() {
         try {
             Object reply;
-            
-            Socket clientSocket = new Socket("localhost", 12345);
+
+            clientSocket = new Socket("localhost", 12345);
             System.out.println("Cliente socket: " + clientSocket);
             outTo = new ObjectOutputStream(clientSocket.getOutputStream());
             inFrom = new ObjectInputStream(clientSocket.getInputStream());
 
             System.out.println("Conectando ao servidor [" + clientSocket.getInetAddress().getHostAddress() + "]");
 
-            double[][] matrix = new double[3][3];
-            double[] vetor = new double[3];
-
-            vetor[0] = 6;
-            vetor[1] = 9;
-            vetor[2] = 11;
-            matrix[0][0] = 1;
-            matrix[0][1] = 1;
-            matrix[0][2] = 1;
-            matrix[1][0] = 1;
-            matrix[1][1] = 2;
-            matrix[1][2] = 2;
-            matrix[2][0] = 2;
-            matrix[2][1] = 1;
-            matrix[2][2] = 3;
-            
-//            for (int i = 0; i < 3; i++) {;
-//                vetor[i] = Math.random();
-//                for (int j = 0; j < 3; j++) {
-//                    matrix[i][j] = Math.random();
-//                }
-//            }
-            LinearSystems msg = new LinearSystems(matrix, vetor);
-            sendMessage(msg);
-            while(true){
+            while (true) {
                 reply = readMessage();
-                if(reply == null) continue;
-                
-                if(reply instanceof LinearSystems){
-                    printVetor((double[]) reply);
+                if (reply == null) {
+                    continue;
                 }
-                
+
+                if (reply instanceof LinearSystems) {
+                    //printVetor(((LinearSystems) reply).getVetor());
+                    SystemsLinearUIController.showResposta(((LinearSystems) reply));
+                }
+                if (reply instanceof CalculusIntegral) {
+                    SystemsLinearUIController.showIntegral(((CalculusIntegral) reply).getResult());
+                }
+                if (reply instanceof CalculusDerivative) {
+                    SystemsLinearUIController.showDerivada(((CalculusDerivative) reply).getResult());
+                }
+
             }
 
         } catch (Exception e) {
+            if(e.getMessage().endsWith("reset")){
+                closeConnection();
+            }
             e.printStackTrace();
         }
     }

@@ -6,8 +6,11 @@
 package main.cd.server.tcp.linkrmi;
 
 import java.rmi.Naming;
+import main.cd.common.CalculusDerivative;
+import main.cd.common.CalculusIntegral;
 import main.cd.common.LinearSystems;
 import main.cd.server.common.Application;
+import main.cd.server.common.Calculus;
 
 /**
  *
@@ -16,10 +19,12 @@ import main.cd.server.common.Application;
 public class RMIClient {
 
     Application app;
+    Calculus calculus;
 
     public RMIClient() {
         try {
             app = (Application) Naming.lookup("rmi://localhost:1099/ApplicationService");
+            calculus = (Calculus) Naming.lookup("rmi://localhost:1100/CalculusService");
         } catch (Exception e) {
             System.out.print("RMI CLIENT error: " + e.getMessage());
         }
@@ -32,11 +37,32 @@ public class RMIClient {
             app.setIndTerms(obj.getVetor());
             obj.setResult(app.calculate());
             return obj;
-            
+
         } catch (Exception e) {
             System.out.print("Requisição error: " + e.getMessage());
             return null;
         }
     }
 
+    public Object solveIntegral(CalculusIntegral msg) {
+        try {
+            System.out.println("Requisição para resolução de Integral da função: " + msg.getFunction());
+            msg.setResult(calculus.solveIntegral(msg));
+            return msg;
+        } catch (Exception e) {
+            System.out.print("Requisição error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Object solveDerivative(CalculusDerivative msg) {
+        try {
+            System.out.println("Requisição para resolução da Derivada da função: " + msg.getFunction());
+            msg.setResult(calculus.solveDerivative(msg));
+            return msg;
+        } catch (Exception e) {
+            System.out.print("Requisição error: " + e.getMessage());
+            return null;
+        }
+    }
 }

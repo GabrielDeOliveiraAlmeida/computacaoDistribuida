@@ -31,6 +31,9 @@ public class LinearSystems implements Serializable {
         return vetor;
     }
     
+    public double[] getResult(){
+        return result;
+    }
     public void setResult(double[] result){
         this.result = result;
     }

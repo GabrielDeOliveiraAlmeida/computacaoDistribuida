@@ -5,6 +5,8 @@
  */
 package main.cd.client;
 
+import ui.client.SystemsLinearUIController;
+
 
 /**
  *
@@ -13,7 +15,14 @@ package main.cd.client;
 public class Client {
     
     public static void main(String[] args) {
-        ClientTCP.init();
+        Client.init();
     }
+    
+    public static void init(){
+        ClientTCP.init();
+        SystemsLinearUIController.showUI();
+    }
+    
+    
 
 }

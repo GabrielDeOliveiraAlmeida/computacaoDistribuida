@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import main.cd.common.CalculusDerivative;
+import main.cd.common.CalculusIntegral;
 import main.cd.common.LinearSystems;
 
 /**
@@ -79,6 +81,13 @@ public class ServerTCPClient extends Thread {
                 }
                 if (message instanceof LinearSystems) {
                     resultado = rmi.linearSystems((LinearSystems) message);
+                }
+                
+                if(message instanceof CalculusIntegral){
+                        resultado = rmi.solveIntegral((CalculusIntegral) message);
+                }
+                if(message instanceof CalculusDerivative){
+                        resultado = rmi.solveDerivative((CalculusDerivative) message);
                 }
                 
                 if(resultado != null){

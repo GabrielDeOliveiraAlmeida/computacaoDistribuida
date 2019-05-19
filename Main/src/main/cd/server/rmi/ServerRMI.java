@@ -8,6 +8,7 @@ package main.cd.server.rmi;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import main.cd.server.common.Application;
+import main.cd.server.common.Calculus;
 
 /**
  *
@@ -28,9 +29,13 @@ public class ServerRMI extends Thread{
             //RMI
             System.out.println("Executando servidor RMI");
             LocateRegistry.createRegistry(1099);
+            LocateRegistry.createRegistry(1100);
 
             Application app = new SolveApplication();
             Naming.rebind("rmi://localhost:1099/ApplicationService", app);
+            
+            Calculus app2 = new Calculo();
+            Naming.rebind("rmi://localhost:1100/CalculusService", app2);
 
         } catch (Exception e) {
             e.printStackTrace();
