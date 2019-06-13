@@ -12,7 +12,7 @@ import org.mariuszgromada.math.mxparser.Expression;
 /**
  *
  * @author gabriel
- * @param <T>
+ * @param <T> PARAMETROS
  */
 public class ComputeIntegral<T> implements AppTask<T>, Serializable {
 

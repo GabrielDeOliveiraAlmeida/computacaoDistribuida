@@ -8,10 +8,13 @@ package main.cd.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.Socket;
 import main.cd.common.CalculusDerivative;
 import main.cd.common.CalculusIntegral;
 import main.cd.common.LinearSystems;
+import main.cd.common.MonteCarlo;
 import ui.client.ClientUIController;
 
 /**
@@ -90,6 +93,9 @@ public class ClientTCP extends Thread {
         
     }
 
+    /*
+        Enviar mensagem ao Servidor via TCP
+    */
     public static void solveIntegral(String function, String top, String bot) {
         client.sendMessage((Object) new CalculusIntegral(function, top, bot));
     }
@@ -97,7 +103,14 @@ public class ClientTCP extends Thread {
     public static void solveDerivative(String function, String x) {
         client.sendMessage((Object) new CalculusDerivative(function, x));
     }
+    
+    public static void pi(long n, int row){
+        client.sendMessage((Object) new MonteCarlo(n, row));
+    }
 
+    /*
+        Thread
+    */
     @Override
     public void run() {
         try {
@@ -112,6 +125,10 @@ public class ClientTCP extends Thread {
 
             while (true) {
                 reply = readMessage();
+                
+                /*
+                Tratar mensagens do servidor.
+                */
                 if (reply == null) {
                     continue;
                 }
@@ -132,6 +149,8 @@ public class ClientTCP extends Thread {
                 }
                 else if (reply instanceof CalculusDerivative) {
                     ClientUIController.showDerivada(((CalculusDerivative) reply).getResult());
+                }else if(reply instanceof MonteCarlo){
+                    ClientUIController.piNumber(((MonteCarlo) reply).getResult(),((MonteCarlo) reply).getRow());
                 }
 
             }

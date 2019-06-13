@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Nova%20pasta%20(2)/Main/src/main/cd/client/Client.java</file>
-            <file>file:/F:/Nova%20pasta%20(2)/Main/src/main/cd/client/ClientTCP.java</file>
-            <file>file:/F:/Nova%20pasta%20(2)/Main/src/main/cd/server/tcp/tcp/Server.java</file>
+            <file>file:/C:/Users/gafel/Desktop/UNESP/4ANO/ComputacaoParalela/TRABALHO%202/computacaoDistribuida/src/main/cd/server/rmi/ServerRMI.java</file>
+            <file>file:/C:/Users/gafel/Desktop/UNESP/4ANO/ComputacaoParalela/TRABALHO%202/computacaoDistribuida/src/main/cd/server/common/Application.java</file>
+            <file>file:/C:/Users/gafel/Desktop/UNESP/4ANO/ComputacaoParalela/TRABALHO%202/computacaoDistribuida/src/main/cd/server/tcp/linkrmi/RMIClient.java</file>
+            <file>file:/C:/Users/gafel/Desktop/UNESP/4ANO/ComputacaoParalela/TRABALHO%202/computacaoDistribuida/src/main/cd/server/common/AppTask.java</file>
+            <file>file:/C:/Users/gafel/Desktop/UNESP/4ANO/ComputacaoParalela/TRABALHO%202/computacaoDistribuida/src/main/cd/server/tcp/app/ComputePIMonteCarlo.java</file>
         </group>
     </open-files>
 </project-private>

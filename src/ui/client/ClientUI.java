@@ -7,6 +7,8 @@ package ui.client;
 
 import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
@@ -105,6 +107,13 @@ public class ClientUI extends javax.swing.JFrame {
         textDerivada = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jButton20 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        pi = new javax.swing.JTextField();
+        jButton21 = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        piTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
 
@@ -166,9 +175,8 @@ public class ClientUI extends javax.swing.JFrame {
                                 .addGap(10, 10, 10)
                                 .addGroup(inicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel19)
-                                    .addComponent(jLabel18))))
-                        .addGap(145, 145, 145)))
-                .addContainerGap(171, Short.MAX_VALUE))
+                                    .addComponent(jLabel18))))))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
         inicioLayout.setVerticalGroup(
             inicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,7 +202,7 @@ public class ClientUI extends javax.swing.JFrame {
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16)
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         Root.add(inicio, "inicio");
@@ -758,7 +766,6 @@ public class ClientUI extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(function, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton4)
@@ -797,16 +804,88 @@ public class ClientUI extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textDerivada, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         Root.add(jPanel4, "integral");
+
+        jLabel12.setText("Aproximação do numero PI pelo algoritmo de Monte Carlo");
+
+        jLabel21.setText("Quantidade de Iterações:");
+
+        pi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                piActionPerformed(evt);
+            }
+        });
+
+        jButton21.setText("GO");
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
+
+        piTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Iterações", "Aproximação"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(piTable);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(103, 103, 103)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton21))
+                    .addComponent(jLabel12))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(87, 87, 87)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(pi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton21))
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(295, Short.MAX_VALUE))
+        );
+
+        Root.add(jPanel5, "pi");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jComboBox1.setBackground(new java.awt.Color(102, 102, 102));
         jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Início", "Sistema Linear", "Integral e Derivada" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Início", "Sistema Linear", "Integral e Derivada", "Aproximação PI" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -964,6 +1043,10 @@ public class ClientUI extends javax.swing.JFrame {
                 break;
             case 2:
                 c1.show(Root,"integral");
+                break;
+            case 3:
+                c1.show(Root, "pi");
+                break;
 
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -1087,6 +1170,20 @@ public class ClientUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton20ActionPerformed
 
+    private void piActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_piActionPerformed
+
+    int row;
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        // TODO add your handling code here:
+        String p = pi.getText();
+        DefaultTableModel model = (DefaultTableModel) piTable.getModel();
+        row = model.getRowCount();
+        model.addRow(new Object[]{p, "-"});
+        ClientUIController.pi(Long.valueOf(p), row);
+    }//GEN-LAST:event_jButton21ActionPerformed
+
     
     private void setarText(String texto, int desl){
         String text = function.getText();
@@ -1146,6 +1243,12 @@ public class ClientUI extends javax.swing.JFrame {
     public void showError(){
         JOptionPane.showMessageDialog(this, "ERROR: Algo não esta certo, verifique a conexão com o servidor");
     }
+    
+    public void piNumber(String n, int row){
+        System.out.println("Aproximação do PI = " + n);
+        DefaultTableModel model = (DefaultTableModel) piTable.getModel();
+        model.setValueAt(n, row, 1);
+    }
     /**
      * @param args the command line arguments
      */
@@ -1203,6 +1306,7 @@ public class ClientUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
+    private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -1214,6 +1318,7 @@ public class ClientUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1223,6 +1328,7 @@ public class ClientUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1234,11 +1340,15 @@ public class ClientUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JButton limpar;
+    private javax.swing.JTextField pi;
+    private javax.swing.JTable piTable;
     private javax.swing.JButton sistema;
     private javax.swing.JTable tab;
     private javax.swing.JTable tab2;

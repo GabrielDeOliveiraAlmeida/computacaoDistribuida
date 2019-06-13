@@ -5,6 +5,9 @@
  */
 package ui.client;
 
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import main.cd.client.ClientTCP;
 import main.cd.common.LinearSystems;
 
@@ -48,5 +51,13 @@ public class ClientUIController {
     
     public static void showError(){
         ui.showError();
+    }
+    
+    public static void piNumber(String pi, int row){
+        ui.piNumber(pi, row);
+    }
+    
+    public static void pi(long n, int row){
+        ClientTCP.pi(n, row);
     }
 }

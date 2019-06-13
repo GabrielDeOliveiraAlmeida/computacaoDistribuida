@@ -5,6 +5,7 @@
  */
 package main.cd.server.tcp.linkrmi;
 
+import java.math.BigDecimal;
 import main.cd.server.tcp.app.ComputeSistema;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
@@ -12,9 +13,11 @@ import java.rmi.registry.Registry;
 import main.cd.common.CalculusDerivative;
 import main.cd.common.CalculusIntegral;
 import main.cd.common.LinearSystems;
+import main.cd.common.MonteCarlo;
 import main.cd.server.common.Application;
 import main.cd.server.tcp.app.ComputeDerivada;
 import main.cd.server.tcp.app.ComputeIntegral;
+import main.cd.server.tcp.app.ComputePIMonteCarlo;
 /**
  *
  * @author gabriel
@@ -68,6 +71,19 @@ public class RMIClient {
                     
         } catch (Exception e) {
             System.out.println("Requisicaoo error: " + e.getMessage());
+            //e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public Object solveMonteCarlo(MonteCarlo msg){
+        try{
+            System.out.println("Requisicao para o calculo do PI utilizando o algoritmo de Monte Carlo");
+            ComputePIMonteCarlo resul = new ComputePIMonteCarlo(msg.n);
+            msg.setResult((String)app.executeTask(resul));
+            return msg;
+        } catch (Exception e) {
+            System.out.println("Requisicao error: " + e.getMessage());
             //e.printStackTrace();
             return null;
         }

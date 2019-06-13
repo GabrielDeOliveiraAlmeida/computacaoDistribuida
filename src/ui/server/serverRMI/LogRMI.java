@@ -87,6 +87,7 @@ public class LogRMI extends JFrame {
     
     /**
      * Runs the program
+     * @param args NAO VAI SER NADA
      */
     
     public static void main(String[] args) {

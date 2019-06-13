@@ -8,7 +8,7 @@ package main.cd.server.common;
 /**
  *
  * @author gabriel
- * @param <T>
+ * @param <Object> OBJETO QUALQUER
  */
 
 public interface AppTask<Object> {

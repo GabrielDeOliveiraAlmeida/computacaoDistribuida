@@ -13,6 +13,7 @@ import java.net.Socket;
 import main.cd.common.CalculusDerivative;
 import main.cd.common.CalculusIntegral;
 import main.cd.common.LinearSystems;
+import main.cd.common.MonteCarlo;
 import ui.server.serverTCP.ServerTCPController;
 
 /**
@@ -47,10 +48,13 @@ public class ServerTCPClient extends Thread {
         //System.out.println(msg);
         ServerTCPController.print(msg);
     }
+    
     public boolean getOk(){
         return ok;
     }
-    
+    /*
+    Enviar mensagem
+    */
     public void sendMessage(Object message) {
         try {
             print("Mensagem para o Cliente: " + message.getClass());
@@ -61,6 +65,9 @@ public class ServerTCPClient extends Thread {
         }
     }
 
+    /*
+    Ler mensagem
+    */
     public Object readMessage() {
         try {
             Object message = inFrom.readObject();
@@ -74,6 +81,9 @@ public class ServerTCPClient extends Thread {
         return null;
     }
 
+    /*
+    Fechar conexão
+    */
     public void closeConnection() {
         try {
             socket.close();
@@ -83,6 +93,9 @@ public class ServerTCPClient extends Thread {
         }
     }
 
+    /*
+    Thread para requisições dos clientes
+    */
     @Override
     public void run() {
         Object resultado = null;
@@ -91,25 +104,32 @@ public class ServerTCPClient extends Thread {
                 //Tratar as requisições do cliente.
                 Object message = readMessage();
                 
+                /*
+                Caso haja desconexão, fechar socket.
+                */
                 if(message.equals("STOPIMEDIATAMENTE")){
                     closeConnection();
                     return;
                 }
+                
                 if(message == null){
                     //sendMessage((Object) "OPA");
                     continue;
                 }
+                
+                
                 if (message instanceof LinearSystems) {
                     resultado = rmi.linearSystems((LinearSystems) message);
                 }
-                
                 if(message instanceof CalculusIntegral){
                         resultado = rmi.solveIntegral((CalculusIntegral) message);
                 }
                 if(message instanceof CalculusDerivative){
                         resultado = rmi.solveDerivative((CalculusDerivative) message);
                 }
-                
+                if(message instanceof MonteCarlo){
+                    resultado = rmi.solveMonteCarlo((MonteCarlo) message);
+                }
                 if(resultado != null){
                     sendMessage(resultado);
                 }

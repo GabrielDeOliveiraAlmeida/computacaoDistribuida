@@ -17,11 +17,12 @@ import ui.server.serverTCP.ServerTCPController;
  */
 public class Server extends Thread{
     public static Server server;
+    
     public static void main(String[] args)  {
         Server.init();
     }
     
-    
+    //Inicialização da UI e servidor
     public static void init(){
        server = new Server();
        ServerTCPController.init();
@@ -32,18 +33,21 @@ public class Server extends Thread{
         //System.out.println(msg);
         ServerTCPController.print(msg);
     }
+    
+    
     @Override
     public void run() {
         try {
-            print("Executando Servidor TCP");
-            
+            print("Executando Servidor TCP");        
             ServerSocket welcomeSocket = new ServerSocket(12345);
             while (true) {
+                //Novo conexão Servidor - Cliente
                 Socket socket = welcomeSocket.accept();
+                //Tratar requisições do Cliente
                 ServerTCPClient client = new ServerTCPClient(socket);
-                
+                //Se houver erro no cliente
                 if(!client.getOk()) return;
-                
+                //Se não, conexão é estabelecida
                 print("Conexao com servidor estabelecida");
                 client.start();
             }

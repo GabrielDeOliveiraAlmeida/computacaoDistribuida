@@ -82,6 +82,7 @@ public class LogTCP extends JFrame {
      
     /**
      * Runs the program
+     * @param args NNAO VAI SER NADA
      */
     
     

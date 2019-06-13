@@ -19,10 +19,13 @@ import ui.server.serverRMI.ServerRMIController;
  */
 public class ServerRMI implements Application {
     public static ServerRMI server;
+    
     public static void main(String[] args) {
         ServerRMI.init();
     }
-
+    /*
+        Inicializar UI e servidor
+    */
     public static void init(){
         server = new ServerRMI();
         ServerRMIController.init();
@@ -30,15 +33,18 @@ public class ServerRMI implements Application {
     }
 
     public void print(String msg){
-        //System.out.println(msg);
         ServerRMIController.print(msg);
     }
+    
+    /*
+        Inicializar o solve
+    */
     public void execute() {
         try {
-            //RMI
             print("Executando servidor RMI");
             Registry registry = LocateRegistry.createRegistry(1099);
           
+            //Interface
             Application app = server ;
             Application stub = (Application) UnicastRemoteObject.exportObject(app, 0);
             registry.rebind("ApplicationService", stub);
@@ -48,6 +54,9 @@ public class ServerRMI implements Application {
         }
     }
 
+    /*
+        Execução do método no Servidor RMI.
+    */
     @Override
     public <T> T executeTask(AppTask<T> t) {
         return t.calculate();

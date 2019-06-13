@@ -12,7 +12,7 @@ import main.cd.server.common.AppTask;
 /**
  *
  * @author gabriel
- * @param <T>
+ * @param <T> PARAMETROS
  */
 public class ComputeSistema<T> implements AppTask<T>,Serializable {
 
